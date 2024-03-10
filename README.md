@@ -1,0 +1,1 @@
+# Recreating some [cyber-dojo](https://cyber-dojo.org/creator/home) exercises in 🦀
