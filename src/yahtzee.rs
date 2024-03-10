@@ -79,6 +79,22 @@ impl Yahtzee {
         }
         sum
     }
+
+    fn fives(&self) -> u8 {
+        let mut s: u8 = 0;
+        let i = 0;
+        for d in i..6 {
+            match d {
+                1 => if self.d1 == 5 { s = s + 5},
+                2 => if self.d2 == 5 { s = s + 5},
+                3 => if self.d3 == 5 { s = s + 5},
+                4 => if self.d4 == 5 { s = s + 5},
+                5 => if self.d5 == 5 { s = s + 5},
+                _ => (),
+            }
+        }
+        s
+    }
 }
 
 #[cfg(test)]
@@ -142,5 +158,12 @@ mod tests {
         assert_eq!(12, Yahtzee{d1: 4, d2: 4, d3: 4, d4: 5, d5: 5}.fours());
         assert_eq!(8, Yahtzee{d1: 4, d2: 4, d3: 5, d4: 5, d5: 5}.fours());
         assert_eq!(4, Yahtzee{d1: 4, d2: 5, d3: 5, d4: 5, d5: 5}.fours());
+    }
+
+    #[test]
+    fn fives() {
+        assert_eq!(10, Yahtzee { d1: 4, d2: 4, d3: 4, d4: 5, d5: 5 }.fives());
+        assert_eq!(15, Yahtzee { d1: 4, d2: 4, d3: 5, d4: 5, d5: 5 }.fives());
+        assert_eq!(20, Yahtzee { d1: 4, d2: 5, d3: 5, d4: 5, d5: 5 }.fives());
     }
 }
