@@ -60,6 +60,27 @@ fn threes(d1: u8, d2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
     return s;
 }
 
+struct Yahtzee {
+    d1: u8,
+    d2: u8,
+    d3: u8,
+    d4: u8,
+    d5: u8
+}
+
+impl Yahtzee {
+    fn fours(&self) -> u8 {
+        let mut sum;
+        sum = 0;
+        for dice in [self.d1, self.d2, self.d3, self.d4, self.d5] {
+            if dice == 4 {
+                sum += 4;
+            }
+        }
+        sum
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::chance;
@@ -67,6 +88,7 @@ mod tests {
     use super::ones;
     use super::twos;
     use super::threes;
+    use super::Yahtzee;
 
     #[test]
     fn chance_scores_sum_of_all_dice() {
@@ -113,5 +135,12 @@ mod tests {
     fn test_threes() {
         assert_eq!(6, threes(1,2,3,2,3));
         assert_eq!(12, threes(2,3,3,3,3));
+    }
+
+    #[test]
+    fn fours_test() {
+        assert_eq!(12, Yahtzee{d1: 4, d2: 4, d3: 4, d4: 5, d5: 5}.fours());
+        assert_eq!(8, Yahtzee{d1: 4, d2: 4, d3: 5, d4: 5, d5: 5}.fours());
+        assert_eq!(4, Yahtzee{d1: 4, d2: 5, d3: 5, d4: 5, d5: 5}.fours());
     }
 }
