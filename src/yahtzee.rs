@@ -142,6 +142,22 @@ impl Yahtzee {
             0
         }
     }
+
+    fn threeofakind(d1: u8, d2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
+        let mut t;
+        t = Box::new([0;6]);
+        t[(d1-1) as usize] += 1;
+        t[(d2-1) as usize] += 1;
+        t[(d3-1) as usize] += 1;
+        t[(d4-1) as usize] += 1;
+        t[(d5-1) as usize] += 1;
+        for i in 0..6 {
+            if t[i] == 3 {
+                return ((i+1)*3) as u8;
+            }
+        }
+        return 0;
+    }
 }
 
 #[cfg(test)]
@@ -227,5 +243,12 @@ mod tests {
     fn two_pair() {
         assert_eq!(16, Yahtzee::twopair(3,3,5,4,5));
         assert_eq!(0, Yahtzee::twopair(3,3,5,5,5));
+    }
+
+    #[test]
+    fn three_of_a_kind() {
+        assert_eq!(9, Yahtzee::threeofakind(3,3,3,4,5));
+        assert_eq!(15, Yahtzee::threeofakind(5,3,5,4,5));
+        assert_eq!(0, Yahtzee::threeofakind(3,3,3,3,5));
     }
 }
