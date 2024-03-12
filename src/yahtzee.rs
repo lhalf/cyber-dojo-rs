@@ -105,6 +105,21 @@ impl Yahtzee {
         }
         s
     }
+
+    fn scorepair(d1: u8, d2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
+        let mut counts = [0,0,0,0,0,0];
+        counts[(d1-1) as usize] += 1;
+        counts[(d2-1) as usize] += 1;
+        counts[(d3-1) as usize] += 1;
+        counts[(d4-1) as usize] += 1;
+        counts[(d5-1) as usize] += 1;
+        for i in 0..6 {
+            if counts[6-i-1] == 2 {
+                return ((6-i) * 2) as u8;
+            }
+        }
+        0
+    }
 }
 
 #[cfg(test)]
@@ -177,5 +192,12 @@ mod tests {
         assert_eq!(0, Yahtzee { d1: 4, d2: 4, d3: 4, d4: 5, d5: 5 }.sixes());
         assert_eq!(6, Yahtzee { d1: 4, d2: 4, d3: 6, d4: 5, d5: 5 }.sixes());
         assert_eq!(18, Yahtzee { d1: 6, d2: 5, d3: 6, d4: 6, d5: 5 }.sixes());
+    }
+
+    #[test]
+    fn one_pair() {
+        assert_eq!(6, Yahtzee::scorepair(3,4,3,5,6));
+        assert_eq!(10, Yahtzee::scorepair(5,3,3,3,5));
+        assert_eq!(12, Yahtzee::scorepair(5,3,6,6,5));
     }
 }
