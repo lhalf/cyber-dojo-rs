@@ -192,6 +192,34 @@ impl Yahtzee {
         }
         return 0;
     }
+
+
+    fn largestraight(d1: u8, d2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
+        let tallies: *mut i32 = unsafe {
+            let layout = std::alloc::Layout::array::<i32>(6).unwrap();
+            let ptr = std::alloc::alloc(layout);
+            ptr as *mut i32
+        };
+
+        unsafe {
+            std::ptr::write_bytes(tallies, 0, 6);
+            *tallies.offset((d1 - 1) as isize) += 1;
+            *tallies.offset((d2 - 1) as isize) += 1;
+            *tallies.offset((d3 - 1) as isize) += 1;
+            *tallies.offset((d4 - 1) as isize) += 1;
+            *tallies.offset((d5 - 1) as isize) += 1;
+        }
+
+        unsafe {
+            return if *tallies.offset(1) == 1 && *tallies.offset(2) == 1 && *tallies.offset(3) == 1 && *tallies.offset(4) == 1 && *tallies.offset(5) == 1 {
+                std::alloc::dealloc(tallies as *mut u8, std::alloc::Layout::array::<i32>(6).unwrap());
+                20
+            } else {
+                std::alloc::dealloc(tallies as *mut u8, std::alloc::Layout::array::<i32>(6).unwrap());
+                0
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -298,5 +326,12 @@ mod tests {
         assert_eq!(15, Yahtzee::smallstraight(1,2,3,4,5));
         assert_eq!(15, Yahtzee::smallstraight(2,3,4,5,1));
         assert_eq!(0, Yahtzee::smallstraight(1,2,2,4,5));
+    }
+
+    #[test]
+    fn largestraight() {
+        assert_eq!(20, Yahtzee::largestraight(6,2,3,4,5));
+        assert_eq!(20, Yahtzee::largestraight(2,3,4,5,6));
+        assert_eq!(0, Yahtzee::largestraight(1,2,2,4,5));
     }
 }
