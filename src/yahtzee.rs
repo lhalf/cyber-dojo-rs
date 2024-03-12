@@ -158,6 +158,22 @@ impl Yahtzee {
         }
         return 0;
     }
+
+    fn fourofakind(_1: u8, _2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
+        let mut tallies;
+        tallies = Box::new([0;6]);
+        tallies[(_1-1) as usize] += 1;
+        tallies[(_2-1) as usize] += 1;
+        tallies[(d3-1) as usize] += 1;
+        tallies[(d4-1) as usize] += 1;
+        tallies[(d5-1) as usize] += 1;
+        for i in 0..6 {
+            if tallies[i] == 4 {
+                return ((i+1)*4) as u8;
+            }
+        }
+        return 0;
+    }
 }
 
 #[cfg(test)]
@@ -250,5 +266,12 @@ mod tests {
         assert_eq!(9, Yahtzee::threeofakind(3,3,3,4,5));
         assert_eq!(15, Yahtzee::threeofakind(5,3,5,4,5));
         assert_eq!(0, Yahtzee::threeofakind(3,3,3,3,5));
+    }
+
+    #[test]
+    fn four_of_a_kind() {
+        assert_eq!(12, Yahtzee::fourofakind(3,3,3,3,5));
+        assert_eq!(20, Yahtzee::fourofakind(5,5,5,4,5));
+        assert_eq!(0, Yahtzee::fourofakind(3,3,3,3,3));
     }
 }
