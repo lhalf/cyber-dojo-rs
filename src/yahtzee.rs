@@ -143,6 +143,22 @@ impl Yahtzee {
         }
     }
 
+    fn fourofakind(_1: u8, _2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
+        let mut tallies;
+        tallies = Box::new([0;6]);
+        tallies[(_1-1) as usize] += 1;
+        tallies[(_2-1) as usize] += 1;
+        tallies[(d3-1) as usize] += 1;
+        tallies[(d4-1) as usize] += 1;
+        tallies[(d5-1) as usize] += 1;
+        for i in 0..6 {
+            if tallies[i] == 4 {
+                return ((i+1)*4) as u8;
+            }
+        }
+        return 0;
+    }
+
     fn threeofakind(d1: u8, d2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
         let mut t;
         t = Box::new([0;6]);
@@ -159,18 +175,20 @@ impl Yahtzee {
         return 0;
     }
 
-    fn fourofakind(_1: u8, _2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
-        let mut tallies;
-        tallies = Box::new([0;6]);
-        tallies[(_1-1) as usize] += 1;
-        tallies[(_2-1) as usize] += 1;
+    #[allow(invalid_value)]
+    fn smallstraight(d1: u8, d2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
+        let mut tallies: Box<[i32; 6]> = Box::new(unsafe { std::mem::MaybeUninit::uninit().assume_init() });
+        let zeros = [0; 6];
+        unsafe {
+            std::ptr::copy_nonoverlapping(zeros.as_ptr(), tallies.as_mut_ptr(), 6);
+        }
+        tallies[(d1-1) as usize] += 1;
+        tallies[(d2-1) as usize] += 1;
         tallies[(d3-1) as usize] += 1;
         tallies[(d4-1) as usize] += 1;
         tallies[(d5-1) as usize] += 1;
-        for i in 0..6 {
-            if tallies[i] == 4 {
-                return ((i+1)*4) as u8;
-            }
+        if tallies[0] == 1 && tallies[1] == 1 && tallies[2] == 1 && tallies[3] == 1 && tallies[4] == 1 {
+            return 15;
         }
         return 0;
     }
@@ -269,9 +287,16 @@ mod tests {
     }
 
     #[test]
-    fn four_of_a_kind() {
+    fn four_of_a_knd() {
         assert_eq!(12, Yahtzee::fourofakind(3,3,3,3,5));
         assert_eq!(20, Yahtzee::fourofakind(5,5,5,4,5));
         assert_eq!(0, Yahtzee::fourofakind(3,3,3,3,3));
+    }
+
+    #[test]
+    fn smallstraight() {
+        assert_eq!(15, Yahtzee::smallstraight(1,2,3,4,5));
+        assert_eq!(15, Yahtzee::smallstraight(2,3,4,5,1));
+        assert_eq!(0, Yahtzee::smallstraight(1,2,2,4,5));
     }
 }
