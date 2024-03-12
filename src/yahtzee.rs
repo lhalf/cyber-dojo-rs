@@ -220,6 +220,41 @@ impl Yahtzee {
             }
         }
     }
+
+    fn fullhouse(d1: u8, d2: u8, d3: u8, d4: u8, d5:u8) -> u8 {
+        let mut tallies = Box::new([0;6]);
+        let mut _2 = false;
+        let i = 0;
+        let mut _2_at = 0;
+        let mut _3 = false;
+        let mut _3_at = 0;
+
+        tallies[(d1-1) as usize] += 1;
+        tallies[(d2-1) as usize] += 1;
+        tallies[(d3-1) as usize] += 1;
+        tallies[(d4-1) as usize] += 1;
+        tallies[(d5-1) as usize] += 1;
+
+        for i in i..6 {
+            if tallies[i] == 2 {
+                _2 = true;
+                _2_at = i + 1;
+            }
+        }
+
+        for i in 0..6 {
+            if tallies[i] == 3 {
+                _3 = true;
+                _3_at = i + 1;
+            }
+        }
+
+        if _2 && _3 {
+            return (_2_at * 2 + _3_at * 3).try_into().unwrap();
+        } else {
+            0
+        }
+    }
 }
 
 #[cfg(test)]
@@ -333,5 +368,11 @@ mod tests {
         assert_eq!(20, Yahtzee::largestraight(6,2,3,4,5));
         assert_eq!(20, Yahtzee::largestraight(2,3,4,5,6));
         assert_eq!(0, Yahtzee::largestraight(1,2,2,4,5));
+    }
+
+    #[test]
+    fn fullhouse() {
+        assert_eq!(18, Yahtzee::fullhouse(6,2,2,2,6));
+        assert_eq!(0, Yahtzee::fullhouse(2,3,4,5,6));
     }
 }
