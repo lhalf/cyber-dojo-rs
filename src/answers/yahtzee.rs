@@ -1,4 +1,6 @@
-trait Yahtzee {
+type DiceRoll = [u8; 5];
+
+pub trait Yahtzee {
     fn chance(&self) -> u8;
     fn yahtzee(&self) -> u8;
     fn ones(&self) -> u8;
@@ -9,7 +11,7 @@ trait Yahtzee {
     fn sixes(&self) -> u8;
 }
 
-impl Yahtzee for [u8; 5] {
+impl Yahtzee for DiceRoll {
     fn chance(&self) -> u8 {
         self.iter().sum()
     }
@@ -23,28 +25,32 @@ impl Yahtzee for [u8; 5] {
     }
 
     fn ones(&self) -> u8 {
-        self.iter().filter(|roll| **roll == 1).sum()
+        score_against_number(*self, 1)
     }
 
     fn twos(&self) -> u8 {
-        self.iter().filter(|roll| **roll == 2).sum()
+        score_against_number(*self, 2)
     }
 
     fn threes(&self) -> u8 {
-        self.iter().filter(|roll| **roll == 3).sum()
+        score_against_number(*self, 3)
     }
 
     fn fours(&self) -> u8 {
-        self.iter().filter(|roll| **roll == 4).sum()
+        score_against_number(*self, 4)
     }
 
     fn fives(&self) -> u8 {
-        self.iter().filter(|roll| **roll == 5).sum()
+        score_against_number(*self, 5)
     }
 
     fn sixes(&self) -> u8 {
-        self.iter().filter(|roll| **roll == 6).sum()
+        score_against_number(*self, 6)
     }
+}
+
+fn score_against_number(roll: DiceRoll, number: u8) -> u8 {
+    roll.iter().filter(|roll| **roll == number).sum()
 }
 
 #[cfg(test)]
