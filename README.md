@@ -1,6 +1,9 @@
 # cyber-dojo-rs
 
-Refactoring exercises from [cyber-dojo](https://cyber-dojo.org/creator/home) written in Rust.
+[cyber-dojo](https://cyber-dojo.org/creator/home) exercises in Rust.
+
+> [!IMPORTANT]
+> If you plan to use cyber-dojo exercises in a commercial organisation this requires a license - please read more on their website.
 
 ## Exercises
 
