@@ -1,2 +1,2 @@
-pub mod answers;
+pub mod examples;
 pub mod exercises;
