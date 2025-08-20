@@ -13,4 +13,4 @@
 | Exercise            | Original                              | Module               | Playground link                                                                                                     |
 |---------------------|---------------------------------------|----------------------|---------------------------------------------------------------------------------------------------------------------|
 | Yahtzee refactoring | Yahtzee refactoring, C++ (g++) assert | exercises/yahtzee.rs | [yahtzee](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=f5a89d012641c440e52bab11139087f9) |
-| Tennis refactoring  | Tennis refactoring, C++ (g++) assert  | exercises/tennis.rs  |                                                                                                                     |
+| Tennis refactoring  | Tennis refactoring, C++ (g++) assert  | exercises/tennis.rs  | [tennis](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=e75100fed739eda0be17206f6d514669)  |
